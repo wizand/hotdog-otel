@@ -1,10 +1,16 @@
 using HotdogFrontend.Components;
 using HotdogFrontend.Components.Account;
 using HotdogFrontend.Data;
+using HotdogFrontend.ManagersAndHandlers;
 
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
+
+using OtelCommon;
 
 namespace HotdogFrontend
 {
@@ -13,6 +19,11 @@ namespace HotdogFrontend
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            //This is used to keep track of the Jwt token that enables the frontend to communicate with the backend
+            builder.Services.AddSingleton<JwtTokenHandler>();
+            //Centralized hhtp client to abstract the management of the http client
+            builder.Services.AddHttpClient();
 
             // Add services to the container.
             builder.Services.AddRazorComponents()
@@ -41,6 +52,37 @@ namespace HotdogFrontend
                 .AddDefaultTokenProviders();
 
             builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
+
+
+
+            TraceActivities.Source = new System.Diagnostics.ActivitySource(ServiceNames.HotDogFrontend);
+
+            builder.Services.AddOpenTelemetry().ConfigureResource(
+                rb => rb
+                .AddService(ServiceNames.HotDogService) //This is the name of the service that will show up in jaeger
+                    .AddAttributes(new List<KeyValuePair<string, object>> // These are attributes added to every trace
+                        {
+                        new KeyValuePair<string, object>("application", ServiceNames.HotDogFrontend),
+                        new KeyValuePair<string, object>("environment", "dev"),
+                        new KeyValuePair<string, object>("version", "0.0.5")
+                        }
+                    )
+                ).WithTracing(builder => builder
+                .AddSource(ServiceNames.HotDogFrontend)
+                .AddAspNetCoreInstrumentation()
+                .AddHttpClientInstrumentation()
+                .AddSqlClientInstrumentation()
+                .AddConsoleExporter()
+                .AddOtlpExporter(options => 
+                    {
+                        options.Endpoint = new Uri("http://localhost:6831"); //Jaeger endpoint
+                        options.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.Grpc;
+                    })
+                );
+
+
+
+
 
             var app = builder.Build();
 

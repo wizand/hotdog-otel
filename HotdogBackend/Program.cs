@@ -33,19 +33,9 @@ builder.Services.AddOpenTelemetry().ConfigureResource(
         options.Endpoint = new Uri("http://localhost:6831"); //Jaeger endpoint
         options.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.Grpc;
     })
-    //.AddJaegerExporter(options =>
-    //{
-    //    options.AgentHost = "localhost"; // Or the appropriate host
-    //    options.AgentPort = 6831; // Default Jaeger agent UDP port
-    //}
-    //)
     );
-    //.AddJaegerExporter(options =>
-    //{
-    //    options.AgentHost = "localhost"; // Or the appropriate host
-    //    options.AgentPort = 6831; // Default Jaeger agent UDP port
-    //})
-    //);
+
+
 
 
 

@@ -5,6 +5,12 @@ VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotdogBackend", "HotdogBackend\HotdogBackend.csproj", "{EE0DD190-2F55-47CC-8967-5A3EBF6285F5}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OtelCommon", "OtelCommon\OtelCommon.csproj", "{174074C3-3605-4F36-AD4A-209B1E6CEC1D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotdogFrontend", "HotdogFrontend\HotdogFrontend.csproj", "{86FAB584-2E88-4295-9376-8E9FA83CF126}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommunicationModels", "CommunicationModels\CommunicationModels.csproj", "{6FA64AF9-DEDC-4FCC-BD97-57C40638C927}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +21,18 @@ Global
 		{EE0DD190-2F55-47CC-8967-5A3EBF6285F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE0DD190-2F55-47CC-8967-5A3EBF6285F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE0DD190-2F55-47CC-8967-5A3EBF6285F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{174074C3-3605-4F36-AD4A-209B1E6CEC1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{174074C3-3605-4F36-AD4A-209B1E6CEC1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{174074C3-3605-4F36-AD4A-209B1E6CEC1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{174074C3-3605-4F36-AD4A-209B1E6CEC1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86FAB584-2E88-4295-9376-8E9FA83CF126}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86FAB584-2E88-4295-9376-8E9FA83CF126}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86FAB584-2E88-4295-9376-8E9FA83CF126}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86FAB584-2E88-4295-9376-8E9FA83CF126}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6FA64AF9-DEDC-4FCC-BD97-57C40638C927}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6FA64AF9-DEDC-4FCC-BD97-57C40638C927}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6FA64AF9-DEDC-4FCC-BD97-57C40638C927}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6FA64AF9-DEDC-4FCC-BD97-57C40638C927}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
