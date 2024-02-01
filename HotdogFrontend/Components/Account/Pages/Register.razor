@@ -6,6 +6,7 @@
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.WebUtilities
 @using HotdogFrontend.Data
+@using OtelCommon
 
 @inject UserManager<ApplicationUser> UserManager
 @inject IUserStore<ApplicationUser> UserStore
@@ -74,9 +75,14 @@
         await emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
         var result = await UserManager.CreateAsync(user, Input.Password);
 
+        using var act = TraceActivities.Source.StartActivity(TagNames.RegisterUser);
+        
         if (!result.Succeeded)
         {
             identityErrors = result.Errors;
+            //Store telemetry
+            act?.AddTag(TagNames.UserName, user.UserName);
+            act?.AddTag(TagNames.RegisterUserSuccessful, false);
             return;
         }
 
@@ -84,8 +90,8 @@
 
 
         //Store telemetry
-        using var act = .Source.StartActivity("Sign Out");
-        act?.AddTag(TagNames.UserName, User?.Identity?.Name);
+        act?.AddTag(TagNames.UserName, user.UserName);
+        act?.AddTag(TagNames.RegisterUserSuccessful, true);
 
         var userId = await UserManager.GetUserIdAsync(user);
         var code = await UserManager.GenerateEmailConfirmationTokenAsync(user);

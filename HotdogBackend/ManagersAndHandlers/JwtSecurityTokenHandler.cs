@@ -1,14 +1,22 @@
+using Microsoft.IdentityModel.Tokens;
+
+using OtelCommon;
+
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 
 internal class JwtSecurityTokenHandler
 {
-    private string clientName;
-    private string secret;
+    private string _clientName;
+    private string _secret;
+    private string _apiKey;
 
-    public JwtSecurityTokenHandler(string clientName, string secret)
+    public JwtSecurityTokenHandler(string clientName, string secret, string apiKey)
     {
-        this.clientName = clientName;
-        this.secret = secret;
+        this._clientName = clientName;
+        this._secret = secret;
+        this._apiKey = apiKey;
     }
 
 
@@ -16,20 +24,30 @@ internal class JwtSecurityTokenHandler
     public string GenerateToken()
     {
         //Create security key
-        SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
+        byte[] keyBytes = Encoding.UTF8.GetBytes(_apiKey);
+        SymmetricSecurityKey securityKey = new SymmetricSecurityKey(keyBytes);
 
         //Create credentials
         SigningCredentials credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
+
+        Claim[] claims =
+            [
+                new Claim(type: JwtRegisteredClaimNames.Sub, value: _clientName+ "" + Guid.NewGuid()),
+                new Claim(type: JwtRegisteredClaimNames.Jti, value: Guid.NewGuid().ToString()),
+                new Claim(type: "sid", value: ServiceNames.HotDogService),
+            ];
+
         //Create token
         JwtSecurityToken token = new JwtSecurityToken(
-            issuer: clientName,
-            audience: clientName,
+            issuer: ServiceNames.HotDogBackend,
+            audience: _clientName,
+            claims: claims,
             expires: DateTime.Now.AddMinutes(30),
             signingCredentials: credentials
         );
 
-        //Return token as string
-        return new JwtSecurityTokenHandler().WriteToken(token);
+        string tokenString = token.ToString();
+        return tokenString;
     }
 }

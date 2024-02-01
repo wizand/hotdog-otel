@@ -1,0 +1,28 @@
+
+
+<div class="card" style="width: 18rem;">
+    <img class="card-img-top" src="@ImgSrc" alt="Card image cap">
+  <div class="card-body">
+        <h5 class="card-title">@Name</h5>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <button class="btn btn-primary" onclick="expandOrder" >Order</button>
+  </div>
+</div>
+
+@code 
+{
+    [Parameter]
+    public string Name { get; set; }
+
+    public void expandOrder()
+    {
+        Console.WriteLine("Ordering " + Name);
+    }
+
+    private const string _imgPath = "/img/";
+    private string _imgName = "";
+    [Parameter]
+    public string ImgName { get { return _imgName; } set { _imgName = value; } }
+
+    private string ImgSrc { get { return _imgPath + ImgName; } }
+}

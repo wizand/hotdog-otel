@@ -37,11 +37,24 @@ public class AuthenticationController : ControllerBase
             return Unauthorized("Wrong secret key");
         }
 
-        JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler(clientLogin.ClientName, secret);
+        string? apiKey = _configuration["ApiKey"];
 
-        
+        if ( apiKey == null)
+        {
+            _logger.LogInformation("Api key not found");
+            return StatusCode(StatusCodes.Status500InternalServerError, "Api key not found");
+        }   
 
-        return Ok(tokenHandler.GenerateToken());
+        try
+        {
+
+            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler(clientLogin.ClientName, secret, apiKey);
+            return Ok(tokenHandler.GenerateToken());
+        } catch (Exception e)
+        {
+            _logger.LogError("Error generating token: " + e.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError, "Error generating token");
+        }
     }
 }
 

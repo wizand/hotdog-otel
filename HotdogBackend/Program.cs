@@ -1,7 +1,12 @@
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 
 using OtelCommon;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +39,32 @@ builder.Services.AddOpenTelemetry().ConfigureResource(
         options.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.Grpc;
     })
     );
+
+    var tokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateLifetime = true,
+        ValidateAudience = true,
+        ValidateIssuer = true,
+        ValidAudiences = getValidAudiences(builder.Configuration),
+        ValidIssuer = ServiceNames.HotDogBackend,
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["ApiKey"]!))
+    };
+
+    builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(o =>
+    {
+        o.SaveToken = true;
+        o.TokenValidationParameters = tokenValidationParameters;
+    });
+
+
+
+IEnumerable<string> getValidAudiences(ConfigurationManager configuration)
+{
+    //Get all the keys in the AuthorizedClients section of the configuration
+    IEnumerable<string> keys = configuration.GetSection("AuthorizedClients").GetChildren().Select(x => x.Key);
+    return keys;
+}
 
 
 

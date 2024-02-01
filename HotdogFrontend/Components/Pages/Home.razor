@@ -4,4 +4,39 @@
 
 <h1>Hello, world!</h1>
 
-Welcome to your new app.
+<p>Please add dem hot dawgs into your cart!</p>
+
+
+<div>
+
+    @{
+        //Create markup so that four of these hotdog cards are in the same row. I want two rows of four hotdog cards.
+        <div class="row">
+
+
+        @for ( int i = 1; i < 5; i++ )
+        {
+            string name = "Hot dawg number " + i + "!";
+            string img = "hotdog" + i + ".png";
+            <div class="col">
+                <HotDogCard Name="@name" ImgName="@img"></HotDogCard>
+            </div>
+        }
+
+        </div>
+        <div class="row">
+
+
+            @for (int i = 1; i < 5; i++)
+            {
+                string name = "Hot dawg number " + i + "!";
+                string img = "hotdog" + i + ".png";
+                <div class="col">
+                    <HotDogCard Name="@name" ImgName="@img"></HotDogCard>
+                </div>
+            }
+
+        </div>
+    }
+
+</div>
