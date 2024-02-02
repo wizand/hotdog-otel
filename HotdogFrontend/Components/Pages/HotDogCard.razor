@@ -5,7 +5,7 @@
   <div class="card-body">
         <h5 class="card-title">@Name</h5>
     <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    <button class="btn btn-primary" onclick="expandOrder" >Order</button>
+        <button class="btn btn-primary" onclick="OnOrderClick">Order</button>
   </div>
 </div>
 
@@ -25,4 +25,13 @@
     public string ImgName { get { return _imgName; } set { _imgName = value; } }
 
     private string ImgSrc { get { return _imgPath + ImgName; } }
+
+    public void OnOrderClick()
+    {
+
+        using var act = OtelCommon.TraceActivities.Source.StartActivity(OtelCommon.EventNames.Order);
+        act?.AddTag(OtelCommon.TagNames.CreatingOrder, Name);
+
+        Console.WriteLine("Ordering " + Name);
+    }
 }

@@ -11,14 +11,25 @@ namespace OtelCommon;
         public const string OrderClientName = "order.client_name";
 
         //Login and logout
-        public const string Login = "login";
-        public const string Logout = "logout";
         public const string LoginSuccesful = "login.successful";
 
         //Register user
-        public const string RegisterUser = "register";
         public const string RegisterUserSuccessful = "register.successful";
+
+        //Order
+        public const string CreatingOrder = "order.creating";
+}
+
+    public static class EventNames
+{
+        public const string Login = "login";
+        public const string Logout = "logout";
+        public const string RegisterUser = "register";
+        public const string Order = "order";
     }
+
+
+
 
 public static class ServiceNames
     {
