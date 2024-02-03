@@ -1,0 +1,65 @@
+
+@{
+    if (IsVisible)
+    {
+        <div class="modal" tabindex="-1" style="width: 350px; display: block; background-color: rgba(0, 0, 0, 0.5);">
+            <div class="input-group mb-3">
+                <span>@Name: </span>
+                
+                <button class="btn btn-outline-secondary" type="button" id="button-add">+</button>
+                <input type="text" disabled="true" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2" />
+                <button class="btn btn-outline-secondary" type="button" id="button-remove">-</button>
+            </div>
+
+        </div>
+
+        <button class="btn btn-outline-secondary" type="button" id="button-remove" onclick="AddToOrder">Add to order</button>
+        <button class="btn btn-outline-secondary" type="button" id="button-remove" onclick="Cancel">Cancel</button>
+     }
+}
+
+
+@code 
+{
+    [Parameter]
+    public string Name { get; set; }
+
+    [Parameter]
+    public string ImgName { get; set; }
+
+    [Parameter]
+    public bool IsVisible { get; set; }
+
+    private int _count = 0;
+
+    private void _add()
+    {
+        _count++;
+    }
+
+    private void _sub()
+    {
+        if ( _count == 0)
+{
+            return;
+        }
+        _count--;
+    }
+
+    public void AddToOrder()
+    {
+        using var act = OtelCommon.TraceActivities.Source.StartActivity(OtelCommon.EventNames.Order);
+        act?.AddTag(OtelCommon.TagNames.CreatingOrder, Name);
+
+        Console.WriteLine("Ordering " + Name);
+    }
+
+    public void OnOrderClick()
+    {
+
+        using var act = OtelCommon.TraceActivities.Source.StartActivity(OtelCommon.EventNames.Order);
+        act?.AddTag(OtelCommon.TagNames.CreatingOrder, Name);
+
+        Console.WriteLine("Ordering " + Name);
+    }
+}

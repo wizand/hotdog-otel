@@ -17,15 +17,16 @@ public class PriceController : ControllerBase
     }
 
     [HttpGet(Name = "PriceTable")]
-    public IEnumerable<KeyValuePair<string, float>> GetPriceTable()
+    public IEnumerable<DtoOrderItem> GetPriceTable()
     {
-        List<KeyValuePair<string, float>> priceTable = new List<KeyValuePair<string, float>>
-        {
-            new KeyValuePair<string, float>("Hotdog", 2.00f),
-            new KeyValuePair<string, float>("Soda", 1.50f),
-            new KeyValuePair<string, float>("Fries", 1.00f)
-        };
-        
-        return priceTable; 
+        return new List<DtoOrderItem>
+            {
+                new DtoOrderItem { Name = "Hotdog normal", Price = 9.50f },
+                new DtoOrderItem { Name = "Hotdog extra", Price = 13.50f },
+                new DtoOrderItem { Name = "Hotdog vege", Price = 10.50f },
+                new DtoOrderItem { Name = "Hotdog kids", Price = 7.50f },
+                new DtoOrderItem { Name = "Hotdog gluten free", Price = 13.50f }
+
+            };
     }
 }
