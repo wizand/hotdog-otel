@@ -18,6 +18,9 @@ namespace OtelCommon;
 
         //Order
         public const string CreatingOrder = "order.creating";
+
+        //Price communication
+        public const string PricesSuccesful = "prices.fetch_succesful";
 }
 
     public static class EventNames
@@ -26,6 +29,7 @@ namespace OtelCommon;
         public const string Logout = "logout";
         public const string RegisterUser = "register";
         public const string Order = "order";
+    public const string Prices = "prices";
     }
 
 

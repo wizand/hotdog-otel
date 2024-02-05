@@ -1,4 +1,6 @@
-﻿namespace HotdogFrontend.Data
+﻿using OtelCommon;
+
+namespace HotdogFrontend.Data
 {
     public class OrderService
     {
@@ -17,21 +19,22 @@
         public List<DtoOrderItem> FetchOrderItemsFromBackend()
         {
             
-
+            using var act = TraceActivities.Source.StartActivity(EventNames.Prices);
             using HttpClient client = _httpClientFactory.CreateClient();
 
-            var response = client.GetAsync("https://localhost:5001/Order/GetOrderItems").Result;
+            var response = client.GetAsync("https://localhost:5001/Order/GetPriceTable").Result;
 
-
-            return new List<DtoOrderItem>
+            if ( response.IsSuccessStatusCode )
             {
-                new DtoOrderItem { Name = "Hotdog normal", Price = 9.50f },
-                new DtoOrderItem { Name = "Hotdog extra", Price = 13.50f },
-                new DtoOrderItem { Name = "Hotdog vege", Price = 10.50f },
-                new DtoOrderItem { Name = "Hotdog kids", Price = 7.50f },
-                new DtoOrderItem { Name = "Hotdog gluten free", Price = 13.50f }
+                var result = response.Content.ReadAsStringAsync().Result;
+                act.AddTag(TagNames.PricesSuccesful, true);
+                return System.Text.Json.JsonSerializer.Deserialize<List<DtoOrderItem>>(result);
+            } else
+            {
+                act.AddTag(TagNames.PricesSuccesful, false);
+                throw new Exception("Failed to fetch order items from backend");
+            }
 
-            };
         }
 
     }
