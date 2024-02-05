@@ -1,5 +1,10 @@
+@using HotdogFrontend.Data
 
 
+@if (OrderViewModel == null)
+{
+    <span>..loading..</span>    
+}
 <div class="card" style="width: 18rem;">
     <img class="card-img-top" src="@ImgSrc" alt="Card image cap">
   <div class="card-body">
@@ -25,6 +30,9 @@
     public string ImgName { get { return _imgName; } set { _imgName = value; } }
 
     private string ImgSrc { get { return _imgPath + ImgName; } }
+
+    [Parameter]
+    public OrderViewModel? OrderViewModel { get; set; } = null;
 
     public void OnOrderClick()
     {
