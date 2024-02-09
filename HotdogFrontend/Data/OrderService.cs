@@ -13,12 +13,14 @@ namespace HotdogFrontend.Data
         private string SessionId = string.Empty;
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly JwtTokenHandler _jwtTokenHandler;
+        private readonly IConfiguration _conf;
 
-        public OrderService(IHttpClientFactory httpClientFactor, JwtTokenHandler jwtTokenHandler)
+        public OrderService(IHttpClientFactory httpClientFactor, JwtTokenHandler jwtTokenHandler, IConfiguration configuration)
         {
             _httpClientFactory = httpClientFactor;
             SessionId = Guid.NewGuid().ToString();
             _jwtTokenHandler = jwtTokenHandler;
+            _conf = configuration;
             _orderViewModel = new OrderViewModel(SessionId, this);
         }
 
@@ -40,7 +42,8 @@ namespace HotdogFrontend.Data
 
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
 
-            var response = client.GetAsync("https://localhost:5001/Order/GetPriceTable").Result;
+            string backendUrl = _conf["HotdogService:HotdogBackendUrl"]; // "http://localhost:5255/Order/GetPriceTable";
+            var response = client.GetAsync(backendUrl + "/Order/GetPriceTable").Result;
 
             if ( response.IsSuccessStatusCode )
             {

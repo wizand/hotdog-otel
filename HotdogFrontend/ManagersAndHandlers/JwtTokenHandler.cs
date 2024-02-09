@@ -34,7 +34,7 @@ namespace HotdogFrontend.ManagersAndHandlers
                     throw new InvalidDataException("Lacking HotdogBackendUrl");
                 }   
 
-                string authenticationUri = hotdogBackendUrl + "/Authentication/Authenticate";
+                string authenticationUri = hotdogBackendUrl + "/Authentication";
 
                 //Generate Http reequest for sending a POST method to the AuthenticationController. Use HttpContent to add the client name and secret key to the request body
 

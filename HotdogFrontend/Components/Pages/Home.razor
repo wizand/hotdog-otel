@@ -1,11 +1,12 @@
 ﻿@page "/"
-
+@inject HotdogFrontend.Data.OrderService _orderService
 <PageTitle>Home</PageTitle>
 
 <h1>Hello, world!</h1>
 
 <p>Please add dem hot dawgs into your cart!</p>
 
+<button class="btn" @onclick="loadPrices">Load Prices</button>
 
 <div>
 
@@ -40,3 +41,15 @@
     }
 
 </div>
+
+
+@code {
+
+
+
+    private void loadPrices()
+    {
+        Console.WriteLine("Prices loaded!");
+        _orderService.FetchOrderItemsFromBackend();
+    }
+}

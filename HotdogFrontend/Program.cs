@@ -80,7 +80,8 @@ namespace HotdogFrontend
                     })
                 );
 
-
+                
+            builder.Services.AddScoped<OrderService>();
 
 
 
